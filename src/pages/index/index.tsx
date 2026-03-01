@@ -1,9 +1,11 @@
+import CommonHeader from '@components/common/header/CommonHeader'
 import styles from './styles/index.module.scss'
 
 function index() {
     return (
     <div className={styles.page}>
        {/* {공통헤더 UI 부분} */}
+       <CommonHeader/>
        {/* {공통 네비게이션 UI 부분} */}
         <div className={styles.page_contents}>
             <div className={styles.page_contents_introBox}>
