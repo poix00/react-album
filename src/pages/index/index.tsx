@@ -9,13 +9,15 @@ import styles from './styles/index.module.scss'
 
 import Card from './components/Card'
 import type { CardDTO } from './types/card'
+import DetailDialog from '@/components/common/dialog/DetailDialog'
 
 function index() {
     const imgSelector = useRecoilValue(imageData)
     const [imgData, setImgData] = useState<CardDTO[]>([]);
+    const [open, setOpen] = useState<boolean>(false); //이미지 상세 다이얼로그 발생(관리) State
     
-    const cardList = imgSelector.data.results.map((card: CardDTO)=>{
-        return <Card data={card} key={card.id}/>
+    const CARD_LIST = imgSelector.data.results.map((card: CardDTO)=>{
+        return <Card data={card} key={card.id} handleDialog= {setOpen}/>
     })
 
     
@@ -39,11 +41,12 @@ function index() {
                 </div>
             </div>
             <div className={styles.page_contents_imageBox}>
-            {cardList}
+            {CARD_LIST}
             </div>
         </div>
         {/* 공통 푸터 UI 부분 */}
         <CommonFooter/>
+        {open && <DetailDialog/>}
     </div>
     )
 }
