@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { useRecoilValue } from 'recoil'
+import { imageData } from '@/store/selectors/imageSelector'
 import CommonHeader from '@components/common/header/CommonHeader'
 import CommonSearchBar from '@components/common/searchBar/CommonSearchBar'
 import CommonNav from '@/components/common/navigation/CommonNav'
@@ -5,43 +8,17 @@ import CommonFooter from '@/components/common/footer/CommonFooter'
 import styles from './styles/index.module.scss'
 
 import Card from './components/Card'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
 import type { CardDTO } from './types/card'
 
 function index() {
-    const [imgUrls, setImagUrls] = useState([]);
-    const getData = async () => { 
-        const API_URL = 'https://api.unsplash.com/search/photos';
-        const API_KEY = 'LjBpXSNL9XuZvYnLP59NCIw1j913DQ6QS8Fe8_bH2jw';
-        const PER_PAGE = 30;
-
-        const searchValue = 'Korea';
-        const pageValue = 100;
-
-        try{
-            const res = await axios.get(`${API_URL}?query=${searchValue}
-                &client_id=${API_KEY}&page=${pageValue}&per_page=${PER_PAGE}`)
-
-                console.log(res);
-                //res.data.results라는 배열을 활용
-
-                if(res.status === 200) {
-                    setImagUrls(res.data.results);
-                }
-        } catch(error) {
-            console.log(error);
-        }
-
-    }
+    const imgSelector = useRecoilValue(imageData)
+    const [imgData, setImgData] = useState<CardDTO[]>([]);
     
-    const cardList = imgUrls.map((card: CardDTO)=>{
+    const cardList = imgSelector.data.results.map((card: CardDTO)=>{
         return <Card data={card} key={card.id}/>
     })
 
-    useEffect (() => {
-        getData();
-    }, [])
+    
     return (
         
     <div className={styles.page}>
@@ -62,7 +39,7 @@ function index() {
                 </div>
             </div>
             <div className={styles.page_contents_imageBox}>
-               {cardList}
+            {cardList}
             </div>
         </div>
         {/* 공통 푸터 UI 부분 */}
