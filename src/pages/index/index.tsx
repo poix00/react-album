@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useMemo, useState } from 'react'
+import { useRecoilValueLoadable } from 'recoil'
 import { imageData } from '@/store/selectors/imageSelector'
 import CommonHeader from '@components/common/header/CommonHeader'
 import CommonSearchBar from '@components/common/searchBar/CommonSearchBar'
@@ -12,13 +12,21 @@ import type { CardDTO } from './types/card'
 import DetailDialog from '@/components/common/dialog/DetailDialog'
 
 function index() {
-    const imgSelector = useRecoilValue(imageData)
     const [imgData, setImgData] = useState<CardDTO>();
     const [open, setOpen] = useState<boolean>(false); //이미지 상세 다이얼로그 발생(관리) State
-    
-    const CARD_LIST = imgSelector.data.results.map((card: CardDTO)=>{
+
+    const imgSelector = useRecoilValueLoadable(imageData);
+
+    const CARD_LIST = useMemo(() => {
+        if(imgSelector.state === "hasValue"){
+            const result = imgSelector.contents.map((card: CardDTO)=>{
         return <Card data={card} key={card.id} handleDialog= {setOpen} handleSetData={setImgData}/>
-    })
+        })
+        return result;
+    } else {
+        return <div>loading...</div>
+    }
+    },[imgSelector])
 
     
     return (

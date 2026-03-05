@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './CommonNav.module.scss'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import navJson from './nav.json'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { pageState } from '@/store/atoms/pageSate'
+import { searchState } from '@/store/atoms/searchState'
 
 interface Navigation {
     index: number
@@ -11,9 +14,11 @@ interface Navigation {
     isActive: boolean
 } 
 function CommonNav() {
-    //서버에서 날려주는게 맞으나 일단 하드코딩
-    //useState로 선언한 반응성을 가진 데이터를 기반으로 UI를 반복호출
+    const location = useLocation();
     const [navigation, setNavigation] = useState<Navigation[]>(navJson)  
+    const [page,setPage] = useRecoilState(pageState);
+    const [search,setSearch] = useRecoilState(searchState)
+
     const navLinks = navigation.map((item: Navigation) => {
         return (
             <Link to={item.path} className={styles.navigation_menu} key={item.path}>
@@ -23,6 +28,18 @@ function CommonNav() {
             </Link>
         )
     });
+
+    useEffect(() => {
+        navigation.forEach((nav: Navigation) => {
+            nav.isActive = false; 
+
+            if(nav.path === location.pathname || location.pathname.includes(nav.path)){
+                nav.isActive = true;
+                setSearch(nav.searchValue)
+                setPage(1)
+            }
+        })
+    },[location.pathname])
     return (
         <nav className={styles.navigation}>{navLinks}</nav>
     )
