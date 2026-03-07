@@ -19,16 +19,7 @@ function CommonNav() {
     const [page,setPage] = useRecoilState(pageState);
     const [search,setSearch] = useRecoilState(searchState)
 
-    const navLinks = navigation.map((item: Navigation) => {
-        return (
-            <Link to={item.path} className={styles.navigation_menu} key={item.path}>
-                <span className={styles.navigation_menu_label}>
-                    {item.label}
-                </span>
-            </Link>
-        )
-    });
-
+    
     useEffect(() => {
         navigation.forEach((nav: Navigation) => {
             nav.isActive = false; 
@@ -39,10 +30,23 @@ function CommonNav() {
                 setPage(1)
             }
         })
+        setNavigation([...navigation])
     },[location.pathname])
+
+    const navLinks = navigation.map((item: Navigation) => {
+        return (
+            <Link to={item.path} className={item.isActive ? `${styles.navigation_menu} ${styles.active}` : `${styles.navigation_menu} ${styles.inactive} `} key={item.path}>
+                <span className={styles.navigation_menu_label}>
+                    {item.label}
+                </span>
+            </Link>
+        )
+    });
+
     return (
         <nav className={styles.navigation}>{navLinks}</nav>
     )
+    
 }
 
 export default CommonNav
