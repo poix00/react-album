@@ -56,7 +56,10 @@
 
             color: main.$color-black-900;
         }
-
+        &.inactive {
+            background-color: main.$color-white-000;
+            border-radius: 4px;
+        }
     }
 }
 
