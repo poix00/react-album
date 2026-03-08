@@ -1,6 +1,6 @@
 @use './color';
-@use './font';
 @forward'./color';
+@use './font';
 @forward'./font';
 
 * {

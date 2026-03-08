@@ -4,13 +4,13 @@ import type { CardDTO } from '../types/card'
 
 interface Props {
   data: CardDTO
+  //             (매개변수 : 타입 => 반환타입)
   handleDialog: (eventValue: boolean) => void
   handleSetData: (eventValue: CardDTO) =>void
 }
 
 function Card({ data, handleDialog, handleSetData } : Props) {
     const openDialog = () => {
-        console.log('dd')
         handleDialog(true)
         handleSetData(data)
     }
