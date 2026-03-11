@@ -61,6 +61,8 @@ function DetailDialog({ data, handleDialog }: Props) {
             setBookmark(true)
         } else if(!getLocalStorage) return
     },[])
+    //함수 방식 -> 필요할 떄마다 직접 계산
+    //useEffect -> 처음 한 번 계산 후 state에 저장
     // const bookmarkFlag = (selected:CardDTO) => {
     //     return JSON.parse(localStorage.getItem("bookmark"))
     //         .some((item:CardDTO) =>item.id === selected.id );

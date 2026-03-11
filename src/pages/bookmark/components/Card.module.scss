@@ -36,6 +36,7 @@
 
         padding: 20px;
         gap: 4px;
+        font-size: 17px;
         &_row {
             display: flex;
             align-items: center;
@@ -53,7 +54,12 @@
                 width: 120px;
             }
             .value {
+                width: 112px;
                 color: main.$color-gray-500;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                word-break: break-all;
             }
         }
     }
