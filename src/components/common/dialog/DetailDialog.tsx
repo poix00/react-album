@@ -18,6 +18,7 @@ toastConfig({
 interface Props{
     data: CardDTO
     handleDialog: (eventValue: boolean) => void
+    bookmarkFlag: (eventeValue: CardDTO) => boolean
 }
 
 function DetailDialog({ data, handleDialog }: Props) {
@@ -53,6 +54,10 @@ function DetailDialog({ data, handleDialog }: Props) {
             }
         }
     }
+    const bookmarkFlag = (selected:CardDTO) => {
+        return JSON.parse(localStorage.getItem("bookmark"))
+            .some((item:CardDTO) =>item.id === selected.id );
+    }
     return (
         <div className={styles.container}>
             <div className={styles.container_dialog}>
@@ -71,12 +76,12 @@ function DetailDialog({ data, handleDialog }: Props) {
                     <div className={styles.bookmark}>
                         <button className={styles.bookmark_button} onClick={()=> addBookmark(data)}>
                             {/* 구글 아이콘 사용 */}
-                            {bookmark === false? 
-                            ( <span className="material-symbols-outlined" style={{fontSize:16+"px"}}>
+                            {bookmarkFlag(data)? 
+                                (<span className="material-symbols-outlined" style={{fontSize:16+"px",color:"red"}}>
                                 favorite
                             </span>) 
                             :
-                            (<span className="material-symbols-outlined" style={{fontSize:16+"px",color:"red"}}>
+                            ( <span className="material-symbols-outlined" style={{fontSize:16+"px"}}>
                                 favorite
                             </span>)}
                             북마크
