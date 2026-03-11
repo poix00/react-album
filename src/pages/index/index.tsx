@@ -10,6 +10,7 @@ import styles from './styles/index.module.scss'
 import Card from './components/Card'
 import DetailDialog from '@/components/common/dialog/DetailDialog'
 import Loading from './components/Loading'
+
 //type
 import type { CardDTO } from './types/card'
 
