@@ -1,6 +1,6 @@
 import type { CardDTO } from '@/pages/index/types/card'
 import styles from './DetailDialog.module.scss'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast, {toastConfig} from 'react-simple-toasts'
 import "react-simple-toasts/dist/theme/dark.css"
 import 'react-simple-toasts/dist/style.css' 
@@ -54,10 +54,17 @@ function DetailDialog({ data, handleDialog }: Props) {
             }
         }
     }
-    const bookmarkFlag = (selected:CardDTO) => {
-        return JSON.parse(localStorage.getItem("bookmark"))
-            .some((item:CardDTO) =>item.id === selected.id );
-    }
+
+    useEffect(()=> {
+        const getLocalStorage = JSON.parse(localStorage.getItem("bookmark"))
+        if(getLocalStorage && getLocalStorage.findIndex((item: CardDTO) => item.id === data.id) > -1){
+            setBookmark(true)
+        } else if(!getLocalStorage) return
+    },[])
+    // const bookmarkFlag = (selected:CardDTO) => {
+    //     return JSON.parse(localStorage.getItem("bookmark"))
+    //         .some((item:CardDTO) =>item.id === selected.id );
+    // }
     return (
         <div className={styles.container}>
             <div className={styles.container_dialog}>
@@ -76,12 +83,13 @@ function DetailDialog({ data, handleDialog }: Props) {
                     <div className={styles.bookmark}>
                         <button className={styles.bookmark_button} onClick={()=> addBookmark(data)}>
                             {/* 구글 아이콘 사용 */}
-                            {bookmarkFlag(data)? 
+                            {/* {bookmarkFlag(data)?  */}
+                            {bookmark ?
                                 (<span className="material-symbols-outlined" style={{fontSize:16+"px",color:"red"}}>
                                 favorite
                             </span>) 
                             :
-                            ( <span className="material-symbols-outlined" style={{fontSize:16+"px"}}>
+                                    ( <span className="material-symbols-outlined" style={{fontSize:16+"px"}}>
                                 favorite
                             </span>)}
                             북마크
