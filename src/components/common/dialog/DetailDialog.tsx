@@ -24,6 +24,7 @@ interface Props{
 function DetailDialog({ data, handleDialog }: Props) {
     const [bookmark, setBookmark] = useState(false)
     const closeDialog = () => {
+        
         handleDialog(false)
     }
 
@@ -60,6 +61,15 @@ function DetailDialog({ data, handleDialog }: Props) {
         if(getLocalStorage && getLocalStorage.findIndex((item: CardDTO) => item.id === data.id) > -1){
             setBookmark(true)
         } else if(!getLocalStorage) return
+
+        const escKeyDownCloseDialog = (event: any) => {
+            if(event.key === "Escape") {
+                closeDialog()
+            }
+        }
+        //위에 만들어놓은 escKeyDownCloseDialog를 키다운 했을 때 , 이벤트로 등록 및 해지
+        document.addEventListener('keydown', escKeyDownCloseDialog)
+        return () => document.removeEventListener('keydown',escKeyDownCloseDialog)
     },[])
     //함수 방식 -> 필요할 떄마다 직접 계산
     //useEffect -> 처음 한 번 계산 후 state에 저장

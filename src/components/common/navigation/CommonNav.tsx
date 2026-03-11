@@ -22,6 +22,8 @@ function CommonNav() {
     
     useEffect(() => {
         navigation.forEach((nav: Navigation) => {
+            console.log("nav.path: "+ nav.path)
+            console.log("location.pathname: "+ location.pathname)
             nav.isActive = false; 
 
             if(nav.path === location.pathname || location.pathname.includes(nav.path)){
